@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ILLCITY Hybrid Race 2027 | Sub-40–50 Min Training Plan</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --surface: #151e32;
+      --surface-hover: #1e293b;
+      --border: #2a3852;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #10b981;
+      --accent-bright: #34d399;
+      --accent-soft: rgba(16, 185, 129, 0.15);
+      --blue: #38bdf8;
+      --orange: #f97316;
+      --purple: #a855f7;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 4rem;
+    }
+
+    header {
+      background: linear-gradient(135deg, #131c31 0%, #0b1120 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .badge {
+      background: var(--accent-soft);
+      color: var(--accent-bright);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 0.65rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .progress-wrapper {
+      margin-top: 0.9rem;
+    }
+
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: #090d16;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Navigation Tabs */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin: 1.15rem 0;
+    }
+
+    .tab-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.65rem 0.4rem;
+      border-radius: var(--radius);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #06281e;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* Phase Filter Pills */
+    .filter-row {
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      scrollbar-width: none;
+    }
+
+    .filter-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .filter-pill.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    /* Week Cards */
+    .week-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.85rem;
+      overflow: hidden;
+    }
+
+    .week-card.completed-week {
+      border-color: rgba(16, 185, 129, 0.5);
+    }
+
+    .week-header {
+      padding: 0.95rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      gap: 0.75rem;
+    }
+
+    .week-header:hover {
+      background: var(--surface-hover);
+    }
+
+    .week-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .week-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .phase-tag {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .phase-1 { background: rgba(56, 189, 248, 0.15); color: var(--blue); }
+    .phase-2 { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+    .phase-3 { background: rgba(249, 115, 22, 0.15); color: var(--orange); }
+    .phase-4 { background: rgba(16, 185, 129, 0.15); color: var(--accent-bright); }
+
+    .week-dates {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .week-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .week-count {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+    }
+
+    .week-count.done {
+      color: var(--accent-bright);
+      background: rgba(16, 185, 129, 0.15);
+    }
+
+    .chevron {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    .week-card.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .week-body {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    .week-card.open .week-body {
+      display: block;
+    }
+
+    .workout-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      background: rgba(11, 17, 32, 0.6);
+      border: 1px solid transparent;
+      margin-bottom: 0.6rem;
+      cursor: pointer;
+      transition: border-color 0.2s, opacity 0.2s;
+    }
+
+    .workout-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .workout-item:hover {
+      border-color: var(--border);
+    }
+
+    .workout-item.checked {
+      opacity: 0.6;
+    }
+
+    .workout-item input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      margin-top: 2px;
+      cursor: pointer;
+      display: grid;
+      place-content: center;
+      background: var(--bg);
+    }
+
+    .workout-item input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .workout-item input[type="checkbox"]:checked::before {
+      content: "✓";
+      color: #06281e;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .workout-content {
+      flex: 1;
+    }
+
+    .workout-day {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent-bright);
+      margin-bottom: 0.15rem;
+    }
+
+    .workout-title {
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .workout-item.checked .workout-title {
+      text-decoration: line-through;
+    }
+
+    .workout-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Info Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h2 {
+      font-size: 1.02rem;
+      margin-bottom: 0.65rem;
+      color: var(--text);
+    }
+
+    .pace-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+
+    .pace-table th,
+    .pace-table td {
+      text-align: left;
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pace-table th {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .pace-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pace-val {
+      font-weight: 700;
+      color: var(--accent-bright);
+      white-space: nowrap;
+    }
+
+    .station-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .station-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(11, 17, 32, 0.65);
+      border: 1px solid var(--border);
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      gap: 0.75rem;
+    }
+
+    .station-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .station-num {
+      background: var(--accent);
+      color: #06281e;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.45rem;
+      border-radius: 5px;
+      min-width: 26px;
+      text-align: center;
+    }
+
+    .station-name {
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .station-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .station-target {
+      text-align: right;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-bright);
+      white-space: nowrap;
+    }
+
+    .strategy-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .strategy-list li {
+      background: rgba(11, 17, 32, 0.65);
+      padding: 0.85rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+      font-size: 0.86rem;
+    }
+
+    .strategy-list strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: var(--text);
+    }
+
+    .footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .reset-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      cursor: pointer;
+    }
+
+    .reset-btn:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <h1>ILLCITY Hybrid Race 2027</h1>
+        <span class="badge">Goal: 40–50 Min • Mar 13, 2027</span>
+      </div>
+      <div class="meta-row">
+        <span>8 × 400m Run (3.2 km) + 8 Stations</span>
+        <span>•</span>
+        <span>15 Weeks • 4x/Wk</span>
+        <span>•</span>
+        <span id="countdownText">Countdown loading...</span>
+      </div>
+      <div class="progress-wrapper">
+        <div class="progress-stats">
+          <span>Overall Completion</span>
+          <span id="progressLabel">0 / 60 Workouts (0%)</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="schedule">15-Week Plan</button>
+      <button class="tab-btn" data-tab="stations">8 Stations & Paces</button>
+      <button class="tab-btn" data-tab="strategy">Race Strategy</button>
+    </div>
+
+    <!-- SCHEDULE TAB -->
+    <section id="schedule" class="section active">
+      <div class="filter-row">
+        <button class="filter-pill active" data-phase="all">All 15 Weeks</button>
+        <button class="filter-pill" data-phase="1">1. Foundation (W1–4)</button>
+        <button class="filter-pill" data-phase="2">2. Strength End. (W5–8)</button>
+        <button class="filter-pill" data-phase="3">3. Race-Specific (W9–12)</button>
+        <button class="filter-pill" data-phase="4">4. Peak & Taper (W13–15)</button>
+      </div>
+      <div id="weeksContainer"></div>
+    </section>
+
+    <!-- STATIONS & PACES TAB -->
+    <section id="stations" class="section">
+      <div class="card">
+        <h2>Official Race Format & 40–50 Min Split Budget</h2>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+          Total race distance is <strong>3.2 km running (8 × 400m)</strong> plus 8 stations. Averaging <strong>2:05–2:25 per 400m run</strong> (~17:00–19:00 total run time) leaves <strong>23:00–28:00</strong> across all 8 stations and steady transitions to finish comfortably in <strong>40–47 minutes</strong>.
+        </p>
+        <div class="station-list">
+          <div class="station-row">
+            <div class="station-left">
+              <span class="station-num">01</span>
+              <div>
+                <div class="station-name">40 Plate Ground to Overhead</div>
+                <div class="station-sub">25 lbs Plate (after Run 1: 400m)</div>
+              </div>
+            </div>
+            <div class="station-target">Target: 2:00–2:20</div>
+          </div>
+          <div class="station-row">
+            <div class="station-left">
+              <span class="station-num">02</span>
+              <div>
+                <div class="station-name">40 Box Step Ups</div>
+                <div class="station-sub">20 in Box (after Run 2: 400m)</div>
+              </div>
+            </div>
+            <div class="station-target">Target: 2:00–2:25</div>
+          </div>
+          <div class="station-row">
+            <div class="station-left">
+              <span class="station-num">03</span>
+              <div>
+                <div class="station-name">40m Burpee Broad Jumps</div>
+                <div class="station-sub">Bodyweight (after Run 3: 400m)</div>
+              </div>
+            </div>
+            <div class="station-target">Target: 2:45–3:15</div>
+          </div>
+          <div class="station-row">
+            <div class="station-left">
+              <span class="station-num">04</span>
+              <div>
+                <div class="station-name">40 DB Suitcase Deadlifts</div>
+                <div class="station-sub">35 lbs Dumbbells (after Run 4: 400m)</div>
+              </div>
+            </div>
+            <div class="station-target">Target: 1:50–2:15</div>
+          </div>
+          <div class="station-row">
+            <div class="station-left">
+              <span class="station-num">05</span>
+              <div>
+                <div class="station-name">30 Hand Release Push-Ups</div>
+                <div class="station-sub">Bodyweight (after Run 5: 400m)</div>
+              </div>
+            </div>
+            <div class="station-target">Target: 1:50–2:20</div>
+          </div>
+          <div class="station-row">
+            <div class="station-left">
+              <span class="station-num">06</span>
+              <div>
+                <div class="station-name">120m Farmers Carry</div>
+                <div class="station-sub">24 kg Kettlebells (after Run 6: 400m)</div>
+              </div>
+            </div>
+            <div class="station-target">Target: 1:45–2:10</div>
+          </div>
+          <div class="station-row">
+            <div class="station-left">
+              <span class="station-num">07</span>
+              <div>
+                <div class="station-name">60m Sandbag Lunges</div>
+                <div class="station-sub">20 kg Sandbag (after Run 7: 400m)</div>
+              </div>
+            </div>
+            <div class="station-target">Target: 3:00–3:45</div>
+          </div>
+          <div class="station-row">
+            <div class="station-left">
+              <span class="station-num">08</span>
+              <div>
+                <div class="station-name">60 Wallballs</div>
+                <div class="station-sub">14 lbs Ball (after Run 8: 400m)</div>
+              </div>
+            </div>
+            <div class="station-target">Target: 3:45–4:30</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Running Pace References (40–50 Min Goal)</h2>
+        <table class="pace-table">
+          <thead>
+            <tr>
+              <th>Workout Type</th>
+              <th>Target Pace</th>
+              <th>400m Split</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>VO₂ Max Repeats</strong><br><span style="font-size:0.75rem;color:var(--text-muted)">Tuesday 300m–800m intervals</span></td>
+              <td class="pace-val">4:30 – 4:50 /km</td>
+              <td>1:48 – 1:56</td>
+            </tr>
+            <tr>
+              <td><strong>Threshold / Tempo</strong><br><span style="font-size:0.75rem;color:var(--text-muted)">Tuesday 800m–1200m repeats</span></td>
+              <td class="pace-val">4:55 – 5:15 /km</td>
+              <td>1:58 – 2:06</td>
+            </tr>
+            <tr>
+              <td><strong>Compromised Race Pace</strong><br><span style="font-size:0.75rem;color:var(--text-muted)">Saturday 400m race splits</span></td>
+              <td class="pace-val">5:10 – 5:55 /km</td>
+              <td>2:05 – 2:22</td>
+            </tr>
+            <tr>
+              <td><strong>Easy Aerobic Run</strong><br><span style="font-size:0.75rem;color:var(--text-muted)">Sunday Zone 2 conversational</span></td>
+              <td class="pace-val">6:15 – 7:00 /km</td>
+              <td>2:30 – 2:48</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STRATEGY TAB -->
+    <section id="strategy" class="section">
+      <div class="card">
+        <h2>Sub-40–50 Min Race-Day Execution Blueprint</h2>
+        <ul class="strategy-list">
+          <li>
+            <strong>1. Smart Set Breaking (Never Go to Muscular Failure)</strong>
+            Going unbroken early causes redlining that costs minutes later. Break reps intentionally from Station 01: e.g., <strong>4 × 10</strong> on Plate Ground-to-Overhead, <strong>2 × 20</strong> on Box Step Ups, and <strong>5 × 6</strong> or <strong>6 × 5</strong> on Hand Release Push-Ups with strict 5–8 second rests.
+          </li>
+          <li>
+            <strong>2. Step-Up Burpees on Station 03 (40m Burpee Broad Jumps)</strong>
+            Step one foot up at a time out of the burpee instead of jumping both feet forward—this saves massive hip-flexor and lower-back energy while keeping your heart rate under control.
+          </li>
+          <li>
+            <strong>3. Grip Management on Stations 04 & 06</strong>
+            On the 40 DB Suitcase Deadlifts (35 lbs), do sets of 10–15 with a quick 5-second shakeout. On the 120m Farmers Carry (24 kg), plan 2–3 brief 5-second drops before your forearms lock up so you can pick the kettlebells right back up.
+          </li>
+          <li>
+            <strong>4. Steady Rhythm on Sandbag Lunges & 60 Wallballs</strong>
+            Take a 10-second breath before hoisting the 20 kg Sandbag, then take smooth, controlled steps without rushing. On the final 60 Wallballs (14 lbs), break into manageable sets of <strong>10–12 reps</strong> with 5–6 seconds rest between sets.
+          </li>
+          <li>
+            <strong>5. Keep Moving on Every 400m Run</strong>
+            Even if your legs feel heavy after lunges or deadlifts, avoid walking the 400m segments. Start each run with a light 50m shuffle to catch your breath, then settle into a steady 2:10–2:20/lap jog.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="footer-actions">
+      <span>Progress auto-saves on this device</span>
+      <button class="reset-btn" id="resetBtn">Reset Progress</button>
+    </div>
+  </main>
+
+  <script>
+    const trainingPlan = [
+      // PHASE 1: FOUNDATION (Weeks 1-4)
+      {
+        week: 1,
+        phase: 1,
+        phaseName: "Foundation",
+        dates: "Nov 30 – Dec 6, 2026",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "6 × 400m Aerobic Intervals", desc: "10 min easy warm-up + 6 × 400m @ 1:52–1:56/lap (4:40–4:50/km) with 90s walk/jog rest + 10 min cool-down." },
+          { day: "Thursday • Functional Strength", title: "All 8 Stations Form & Pacing Circuit", desc: "2–3 rounds @ comfortable load: 12 Plate GTOH, 16 Box Step Ups, 15m Step-Up BBJ, 12 DB Deadlifts, 10 HR Push-Ups, 40m Carry, 20m Lunges, 15 Wallballs." },
+          { day: "Saturday • Hybrid Simulation (4 Stations)", title: "4-Station Foundation Sim", desc: "4 rounds: 400m Run @ 2:15/lap + 1 station at 50% race reps (Plate GTOH → Box Step Ups → BBJ → DB Deadlifts). 90s rest between rounds." },
+          { day: "Sunday • Easy Aerobic Run", title: "35–40 min Zone 2 Easy Run", desc: "Conversational pace (6:20–6:50/km). Run-walk is fine if needed to keep heart rate comfortable." }
+        ]
+      },
+      {
+        week: 2,
+        phase: 1,
+        phaseName: "Foundation",
+        dates: "Dec 7 – Dec 13, 2026",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "5 × 600m Aerobic Intervals", desc: "10 min warm-up + 5 × 600m @ 4:45/km (2 min walk/jog rest) + 10 min cool-down." },
+          { day: "Thursday • Functional Strength", title: "All 8 Stations Base Strength", desc: "3 rounds: 15 Plate GTOH, 20 Box Step Ups (20 in), 20m BBJ, 15 DB Deadlifts, 12 HR Push-Ups, 60m Carry, 25m Lunges, 20 Wallballs." },
+          { day: "Saturday • Hybrid Simulation (4–5 Stations)", title: "5-Station Lower-Body Endurance Sim", desc: "5 rounds: 400m Run @ 2:15/lap + HR Push-Ups → Farmers Carry → Sandbag Lunges → Wallballs → Box Step Ups (50% reps). 75s rest." },
+          { day: "Sunday • Easy Aerobic Run", title: "40–45 min Zone 2 Easy Run", desc: "Steady, relaxed effort; focus on smooth breathing and upright posture." }
+        ]
+      },
+      {
+        week: 3,
+        phase: 1,
+        phaseName: "Foundation",
+        dates: "Dec 14 – Dec 20, 2026",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "4 × 800m Steady Repeats", desc: "10 min warm-up + 4 × 800m @ 4:50/km (2 min rest) + 10 min cool-down." },
+          { day: "Thursday • Functional Strength", title: "Grip, Pressing & Core (All 8 Stations)", desc: "3 rounds at 55% race reps across all 8 stations. Practice planned set breaks (e.g., sets of 8–10 reps) with short 5–8s rests." },
+          { day: "Saturday • Hybrid Simulation (5 Stations)", title: "Continuous 5-Station Block", desc: "Continuous with steady pacing: 400m Run + 20 Plate GTOH → 400m + 20 Box Step Ups → 400m + 20m BBJ → 400m + 20 DB Deadlifts → 400m + 15 HR Push-Ups." },
+          { day: "Sunday • Easy Aerobic Run", title: "45–50 min Zone 2 Base Run", desc: "Easy conversational run + 4 × 15s relaxed strides at the end." }
+        ]
+      },
+      {
+        week: 4,
+        phase: 1,
+        phaseName: "Foundation",
+        dates: "Dec 21 – Dec 27, 2026",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "8 × 300m Light Turnover (Deload)", desc: "Reduced volume: 8 × 300m @ 4:35/km with 90s full recovery." },
+          { day: "Thursday • Functional Strength", title: "8-Station Movement Efficiency", desc: "2 rounds of all 8 stations at 45% race volume (70% RPE). Focus on smooth, relaxed breathing." },
+          { day: "Saturday • Hybrid Simulation (4–5 Stations)", title: "4-Station Pacing Practice", desc: "4 × (400m Run @ 2:10/lap + 50% volume station: Carry, Lunges, Wallballs, BBJ) with 60s rest." },
+          { day: "Sunday • Easy Aerobic Run", title: "35 min Recovery Aerobic Run", desc: "Easy recovery jog to absorb Phase 1 training." }
+        ]
+      },
+
+      // PHASE 2: STRENGTH ENDURANCE (Weeks 5-8)
+      {
+        week: 5,
+        phase: 2,
+        phaseName: "Strength Endurance",
+        dates: "Dec 28, 2026 – Jan 3, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "5 × 800m Aerobic Power", desc: "5 × 800m @ 4:45/km (90s walk/jog rest). Keep pace even across all 5 reps." },
+          { day: "Thursday • Functional Strength", title: "Carries & Lunges Focus (All 8 Stations)", desc: "3 sets of 80m Farmers Carry & 40m Sandbag Lunges (race weight), followed by 2 rounds of all 8 stations at 60% reps." },
+          { day: "Saturday • Hybrid Simulation (5–6 Stations)", title: "6-Station Strength Endurance Sim", desc: "Stations 01–06 at 65% volume with 400m runs @ 2:12/lap between each station." },
+          { day: "Sunday • Easy Aerobic Run", title: "45–50 min Zone 2 Aerobic Run", desc: "Consistent conversational pace; hydrate and fuel well post-run." }
+        ]
+      },
+      {
+        week: 6,
+        phase: 2,
+        phaseName: "Strength Endurance",
+        dates: "Jan 4 – Jan 10, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "3 × 1000m + 3 × 400m", desc: "1000m @ 4:55/km (90s rest), then 400m @ 1:48/lap (75s rest)." },
+          { day: "Thursday • Functional Strength", title: "8-Station Muscular Stamina", desc: "Build up to full race reps on HR Push-Ups (30, broken into 6 × 5) and Farmers Carry (120m), plus 60% reps on the other 6 stations." },
+          { day: "Saturday • Hybrid Simulation (6 Stations)", title: "6-Station Heavy Leg Run Sim", desc: "Stations 03–08 (BBJ, DB Deadlifts, HR Push-Ups, 100m Carry, 45m Lunges, 40 Wallballs) with 400m runs @ 2:15/lap." },
+          { day: "Sunday • Easy Aerobic Run", title: "50–55 min Zone 2 Long Run", desc: "Longest aerobic run of the block; maintain comfortable breathing." }
+        ]
+      },
+      {
+        week: 7,
+        phase: 2,
+        phaseName: "Strength Endurance",
+        dates: "Jan 11 – Jan 17, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "7 × 500m Controlled Speed", desc: "7 × 500m @ 4:40/km with 75s rest to build running economy on tired legs." },
+          { day: "Thursday • Functional Strength", title: "All 8 Stations Continuous Circuit", desc: "2 cycles of all 8 stations at 60% race volume (24 Plate GTOH, 24 Box Step Ups, 24m BBJ, 24 DB Deadlifts, 18 HRPU, 72m Carry, 36m Lunges, 36 Wallballs)." },
+          { day: "Saturday • Hybrid Simulation (6 Stations)", title: "6-Station Continuous Race Pace Block", desc: "Stations 01–06 at 80% race reps with 400m runs @ 2:10–2:15/lap—keep moving steadily." },
+          { day: "Sunday • Easy Aerobic Run", title: "45 min Zone 2 Aerobic Run", desc: "Relaxed conversational pace to clear residual leg fatigue." }
+        ]
+      },
+      {
+        week: 8,
+        phase: 2,
+        phaseName: "Strength Endurance",
+        dates: "Jan 18 – Jan 24, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "4 × 800m Threshold Cruise (Deload)", desc: "4 × 800m @ 5:00/km (90s rest). Smooth, controlled effort." },
+          { day: "Thursday • Functional Strength", title: "8-Station Crisp Reps & Pacing", desc: "All 8 stations at race weight (50% reps); practice clean form and controlled transitions." },
+          { day: "Saturday • Hybrid Simulation (5–6 Stations)", title: "5-Station Pacing Calibration", desc: "5 rounds: 400m Run locked at 2:10/lap target pace + 5 stations at 60% reps." },
+          { day: "Sunday • Easy Aerobic Run", title: "40 min Easy Recovery Run", desc: "Keep effort very light ahead of Phase 3." }
+        ]
+      },
+
+      // PHASE 3: RACE-SPECIFIC PREPARATION (Weeks 9-12)
+      {
+        week: 9,
+        phase: 3,
+        phaseName: "Race-Specific Prep",
+        dates: "Jan 25 – Jan 31, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "1000m / 800m / 600m / 400m / 400m", desc: "Descending ladder from 4:55/km down to 4:30/km with 90s walk/jog rest." },
+          { day: "Thursday • Functional Strength", title: "8-Station Official Race-Weight Conditioning", desc: "All 8 stations at official race weights (70% volume), rehearsing your exact set-breaking plan." },
+          { day: "Saturday • Hybrid Simulation (6–7 Stations)", title: "7-Station Race Pace Simulation", desc: "Stations 01–07 in exact race order at 80% station reps with 400m runs @ 2:10–2:18/lap." },
+          { day: "Sunday • Easy Aerobic Run", title: "45 min Zone 2 Aerobic Run", desc: "Steady recovery run; prioritize sleep and hydration." }
+        ]
+      },
+      {
+        week: 10,
+        phase: 3,
+        phaseName: "Race-Specific Prep",
+        dates: "Feb 1 – Feb 7, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "5 × 800m Lactate Tolerance", desc: "5 × 800m @ 4:42/km with 90s rest. Focus on steady breathing." },
+          { day: "Thursday • Functional Strength", title: "8-Station Lunge-to-Wallball Finisher", desc: "Stations 01–06 at 60% reps, followed by full race volume on Station 07 (60m Sandbag Lunges) into Station 08 (60 Wallballs in sets of 10–12)." },
+          { day: "Saturday • Hybrid Simulation (7 Stations)", title: "7-Station Near-Full Race Sim", desc: "Stations 02–08 in exact race sequence at 85% volume with 400m runs @ 2:10–2:20/lap." },
+          { day: "Sunday • Easy Aerobic Run", title: "45 min Zone 2 Aerobic Run", desc: "Easy conversational run to promote recovery." }
+        ]
+      },
+      {
+        week: 11,
+        phase: 3,
+        phaseName: "Race-Specific Prep",
+        dates: "Feb 8 – Feb 14, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "8 × 400m Compromised Running", desc: "Perform 12 Wallballs or 10m BBJ before reps 1, 3, 5, 7; run all 400m reps @ 2:00–2:05 (75s rest)." },
+          { day: "Thursday • Functional Strength", title: "8-Station Split Timing Session", desc: "All 8 stations at 70% race volume with 90s rest; note your time per station to confirm your 40–50 min pace." },
+          { day: "Saturday • Hybrid Simulation (7–8 Stations)", title: "8-Station Half-Volume Dress Rehearsal", desc: "All 8 stations in exact order at 50% station reps + full 8 × 400m runs @ 2:08–2:15/lap." },
+          { day: "Sunday • Easy Aerobic Run", title: "40 min Zone 2 Aerobic Run", desc: "Easy aerobic flush." }
+        ]
+      },
+      {
+        week: 12,
+        phase: 3,
+        phaseName: "Race-Specific Prep",
+        dates: "Feb 15 – Feb 21, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "5 × 600m @ Race Rhythm", desc: "5 × 600m @ 4:50/km (90s rest). Smooth, sustainable effort." },
+          { day: "Thursday • Functional Strength", title: "8-Station Tune-Up (Moderate Volume)", desc: "Touch all 8 stations at race weight (50% reps) with full rest between stations." },
+          { day: "Saturday • Hybrid Simulation (All 8 Stations)", title: "Peak 8-Station Dress Rehearsal", desc: "Full 8-station race simulation (8 × 400m runs + all 8 stations at 85% reps). Test race shoes, hydration, and set breaks." },
+          { day: "Sunday • Easy Aerobic Run", title: "35 min Recovery Run", desc: "Light recovery jog; review splits from Saturday's dress rehearsal." }
+        ]
+      },
+
+      // PHASE 4: PEAK & TAPER (Weeks 13-15)
+      {
+        week: 13,
+        phase: 4,
+        phaseName: "Peak & Taper",
+        dates: "Feb 22 – Feb 28, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "6 × 400m Crisp Repeats", desc: "6 × 400m @ 1:52/lap (90s rest). Springy, controlled, zero straining." },
+          { day: "Thursday • Functional Strength", title: "8-Station Peak Conditioning (60% Volume)", desc: "All 8 stations at race weight, clean sets, generous rest. Finish feeling strong." },
+          { day: "Saturday • Hybrid Simulation (All 8 Stations)", title: "8-Station Pacing Sim (60% Volume)", desc: "All 8 stations in exact order (60% reps) with 8 × 400m runs @ 2:08–2:15/lap to lock in your race rhythm." },
+          { day: "Sunday • Easy Aerobic Run", title: "35 min Easy Zone 2 Run", desc: "Relaxed aerobic maintenance." }
+        ]
+      },
+      {
+        week: 14,
+        phase: 4,
+        phaseName: "Peak & Taper",
+        dates: "Mar 1 – Mar 7, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "5 × 400m Race-Pace Rhythm", desc: "5 × 400m @ exact 2:08/lap target pace (90s rest). Dial in your internal clock." },
+          { day: "Thursday • Functional Strength", title: "8-Station Taper Primer (45% Volume)", desc: "Race-weight primer touching all 8 stations at ~45% reps. Zero soreness." },
+          { day: "Saturday • Hybrid Simulation (All 8 Stations)", title: "8-Station Mini Dress Rehearsal (35% Volume)", desc: "Light 18–22 min run-through of all 8 stations (35% reps) + 200m runs at race pace." },
+          { day: "Sunday • Easy Aerobic Run", title: "25–30 min Easy Shakeout Run", desc: "Short, easy jog + 3 × 15s strides." }
+        ]
+      },
+      {
+        week: 15,
+        phase: 4,
+        phaseName: "Race Week",
+        dates: "Mar 8 – Mar 13, 2027",
+        workouts: [
+          { day: "Tuesday • Running Intervals", title: "4 × 300m Race-Week Openers", desc: "10 min easy warm-up + 4 × 300m @ 4:45/km (90s walk rest) + 5 min cool-down." },
+          { day: "Thursday • Functional Strength", title: "15-Min Nervous System Activation", desc: "1 light round: 8 Plate GTOH, 10 Box Step Ups, 10m BBJ, 8 DB Deadlifts, 6 HRPU, 30m Carry, 15m Lunges, 12 Wallballs." },
+          { day: "Friday • Pre-Race Shakeout", title: "15 min Easy Walk/Jog + Mobility", desc: "Light movement, hydrate with electrolytes, lay out race gear." },
+          { day: "Saturday, Mar 13 • RACE DAY", title: "ILLCITY Hybrid Race 2027 — Sub-40–50 Min Execution", desc: "8 × 400m @ 2:05–2:20/lap + smart set breaks across all 8 stations. Finish strong on the 60 Wallballs!" }
+        ]
+      }
+    ];
+
+    const STORAGE_KEY = "illcity_sub40_50_hybrid_plan_v1";
+    let completedSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+    let activePhase = "all";
+
+    const weeksContainer = document.getElementById("weeksContainer");
+    const progressBar = document.getElementById("progressBar");
+    const progressLabel = document.getElementById("progressLabel");
+
+    function updateCountdown() {
+      const raceDate = new Date("2027-03-13T08:00:00");
+      const now = new Date();
+      const diffDays = Math.ceil((raceDate - now) / (1000 * 60 * 60 * 24));
+      const el = document.getElementById("countdownText");
+      if (diffDays > 0) {
+        el.textContent = `${diffDays} days to race`;
+      } else if (diffDays === 0) {
+        el.textContent = "Race Day!";
+      } else {
+        el.textContent = "Race Completed";
+      }
+    }
+
+    function updateGlobalProgress() {
+      const total = trainingPlan.reduce((sum, w) => sum + w.workouts.length, 0);
+      const done = completedSet.size;
+      const pct = Math.round((done / total) * 100);
+      progressBar.style.width = `${pct}%`;
+      progressLabel.textContent = `${done} / ${total} Workouts (${pct}%)`;
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedSet]));
+      updateGlobalProgress();
+    }
+
+    function renderWeeks() {
+      weeksContainer.innerHTML = "";
+      const filtered = activePhase === "all"
+        ? trainingPlan
+        : trainingPlan.filter(w => String(w.phase) === activePhase);
+
+      filtered.forEach((weekObj, idx) => {
+        const weekDoneCount = weekObj.workouts.filter((_, wIdx) =>
+          completedSet.has(`w${weekObj.week}-d${wIdx}`)
+        ).length;
+        const isWeekComplete = weekDoneCount === weekObj.workouts.length;
+
+        const card = document.createElement("div");
+        card.className = `week-card ${isWeekComplete ? "completed-week" : ""} ${idx === 0 ? "open" : ""}`;
+
+        card.innerHTML = `
+          <div class="week-header">
+            <div class="week-title-group">
+              <div class="week-title">
+                <span>Week ${weekObj.week}</span>
+                <span class="phase-tag phase-${weekObj.phase}">${weekObj.phaseName}</span>
+              </div>
+              <div class="week-dates">${weekObj.dates}</div>
+            </div>
+            <div class="week-right">
+              <span class="week-count ${isWeekComplete ? "done" : ""}">${weekDoneCount}/${weekObj.workouts.length}</span>
+              <span class="chevron">▼</span>
+            </div>
+          </div>
+          <div class="week-body">
+            ${weekObj.workouts.map((wo, wIdx) => {
+              const id = `w${weekObj.week}-d${wIdx}`;
+              const checked = completedSet.has(id);
+              return `
+                <label class="workout-item ${checked ? "checked" : ""}" for="${id}">
+                  <input type="checkbox" id="${id}" ${checked ? "checked" : ""} />
+                  <div class="workout-content">
+                    <div class="workout-day">${wo.day}</div>
+                    <div class="workout-title">${wo.title}</div>
+                    <div class="workout-desc">${wo.desc}</div>
+                  </div>
+                </label>
+              `;
+            }).join("")}
+          </div>
+        `;
+
+        card.querySelector(".week-header").addEventListener("click", () => {
+          card.classList.toggle("open");
+        });
+
+        card.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+          checkbox.addEventListener("change", (e) => {
+            const id = e.target.id;
+            const item = e.target.closest(".workout-item");
+            if (e.target.checked) {
+              completedSet.add(id);
+              item.classList.add("checked");
+            } else {
+              completedSet.delete(id);
+              item.classList.remove("checked");
+            }
+            saveProgress();
+
+            const newCount = weekObj.workouts.filter((_, wIdx) =>
+              completedSet.has(`w${weekObj.week}-d${wIdx}`)
+            ).length;
+            const badge = card.querySelector(".week-count");
+            badge.textContent = `${newCount}/${weekObj.workouts.length}`;
+            if (newCount === weekObj.workouts.length) {
+              badge.classList.add("done");
+              card.classList.add("completed-week");
+            } else {
+              badge.classList.remove("done");
+              card.classList.remove("completed-week");
+            }
+          });
+        });
+
+        weeksContainer.appendChild(card);
+      });
+    }
+
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    document.querySelectorAll(".filter-pill").forEach((pill) => {
+      pill.addEventListener("click", () => {
+        document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        activePhase = pill.dataset.phase;
+        renderWeeks();
+      });
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (confirm("Reset all completed workouts?")) {
+        completedSet.clear();
+        saveProgress();
+        renderWeeks();
+      }
+    });
+
+    updateCountdown();
+    updateGlobalProgress();
+    renderWeeks();
+  </script>
+</body>
+</html>
